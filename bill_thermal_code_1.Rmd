@@ -3,8 +3,9 @@ title: "bill_thermal_code_1"
 author: "Rosalee Elting"
 date: "2/23/2022"
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -16,26 +17,34 @@ getwd()
 sessionInfo()
 ```
 **Load Libraries**
-```{r}
+```{r load libraries}
 library(Thermimage)
 library(ggplot2)
 library(tidyr)
+library(Thermimage)
+library(field)
 ```
-To use this Thermal Package, you will also have to download ExifTools here: https://exiftool.org/install.html
+To use this Thermal Package, you will also have to download ExifTools here: https://exiftool.org/install.htm. Also you need to know where it is. The code is written that it is titled "exiftools" with NO extension (such as .exe) and located in the Windows folder (C:/)
 
-**Convert the FLIR jpeg to a regular one**
-```{r}
-convertflirJPG("IR_1913.jpg", exiftoolpath = "installed" ,  headerindex=1)
-```
-
-
-```{r load library and test image}
+```{r load image-sample}
 library(Thermimage)
 f<-paste0(system.file("extdata/IR_2412.jpg", package="Thermimage"))
-img<-readflirJPG(f, exiftoolpath="C:/")
+img<-readflirJPG(f, exiftoolpath="installed")
+dim(img)
+```
+**This is producing an error:** *Warning in readflirJPG(f, exiftoolpath = "C:/") :
+  Exiftool cannot extract raw thermal image data.
+  Image does not contain FLIR radiometric data.
+  Check with the user manual or manufacturer
+  or ensure camera is set to save radiometric information.*
+```{r load my image}
+f<-paste0(system.file())
+f <-"C:/Users/Mellisuga/Downloads/raw_03.tiff"
+img<-readflirJPG(f,exiftoolpath="C:/")
 dim(img)
 
 ```
+
 ```{r extract metatags from thermal image file}
 cams<-flirsettings(f, exiftoolpath="C:/", camvals="")
 head(cbind(cams$Info), 20)
@@ -125,7 +134,7 @@ Finding a way to quantitatively analyse thermal images in R is a challenge due t
 
 First, the image matrix needs to be transposed (t) to swap the row vs. column order in which the data are stored, then the temperatures need to be transformed to a vector, a requirement of the writeBin function. The function writeFlirBin is a wrapper for writeBin, and uses information on image width, height, frame number and image interval (the latter two are included for thermal video saves) but are kept for simplicity to contruct a filename that incorporates image information required when importing to ImageJ:
 ```{r}
-writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname="Uploads/FLIRjpg")
+#writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname="Uploads/FLIRjpg")
 ```
 
 
