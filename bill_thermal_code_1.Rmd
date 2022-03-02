@@ -11,36 +11,53 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-**Check Working directory for your computer**
+**Document Working directory for your computer and produce session info into About. **
+*Both can now be found in my environment for future reference*
 ```{r}
-getwd()
-sessionInfo()
+About<- sessionInfo()
+WD <- getwd()
 ```
-**Load Libraries**
+
+**LOAD LIBRARIES** 
 ```{r load libraries}
 library(Thermimage)
 library(ggplot2)
 library(tidyr)
 library(Thermimage)
-library(field)
+library(fields)
 ```
-To use this Thermal Package, you will also have to download ExifTools here: https://exiftool.org/install.htm. Also you need to know where it is. The code is written that it is titled "exiftools" with NO extension (such as .exe) and located in the Windows folder (C:/)
 
-```{r load image-sample}
-library(Thermimage)
-f<-paste0(system.file("extdata/IR_2412.jpg", package="Thermimage"))
-img<-readflirJPG(f, exiftoolpath="installed")
-dim(img)
+**EXIFTOOLS NOTE**
+*To use this Thermal Package, you will also have to download ExifTools here: https://exiftool.org/install.htm. Also you need to know where it is. The code is written that it is titled "exiftools" with NO extension (such as .exe) and located in the Windows folder (C:/)*
+
+BEGINNING OF CODE, NEED TO MAKE INTO A LOOP EVENTUALLY 
+
+
+```{r}
+for (i in vector) {
+  
+}
+images <- list.files(path="/Users/Mellisuga/Documents/R/bill_thermal_input", pattern="*.jpg")
+setwd("/Users/MD/Desktop/Files")
+for (j in 1:length(files)){
+  i <- read.table(files[j])
+  i_automean <- mean(i[1:5651,10])
+  i_xmean <- mean(i[5652:7977,10])
+  barplot(i[,10]/i_automean, ylim = c(0,2.5))
+  abline(h=1, col ="red", lwd =3)
+  abline(h=22.06126/i_automean, col ="red", lwd =3)
+  abline(v=2300*1.2, col="blue", lwd =3)
+  abline(v=5651*1.2, col="blue", lwd=3)
+  pdf(paste0(files[j],".pdf"))
+  graphics.off()
+} 
 ```
-**This is producing an error:** *Warning in readflirJPG(f, exiftoolpath = "C:/") :
-  Exiftool cannot extract raw thermal image data.
-  Image does not contain FLIR radiometric data.
-  Check with the user manual or manufacturer
-  or ensure camera is set to save radiometric information.*
+
+
 ```{r load my image}
-f<-paste0(system.file())
-f <-"C:/Users/Mellisuga/Downloads/raw_03.tiff"
-img<-readflirJPG(f,exiftoolpath="C:/")
+#f<-paste0(system.file())
+f <-"IR_1913.jpg"
+img<-readflirJPG(f, exiftoolpath="C:/")
 dim(img)
 
 ```
@@ -48,16 +65,18 @@ dim(img)
 ```{r extract metatags from thermal image file}
 cams<-flirsettings(f, exiftoolpath="C:/", camvals="")
 head(cbind(cams$Info), 20)
-
 ```
+
 ```{r to see camera calibration constants}
 plancks<-flirsettings(f, exiftoolpath="C:/", camvals="-*Planck*")
 unlist(plancks$Info)
-
 ```
+
 ```{r to see file data information}
 cbind(unlist(cams$Dates))
 ```
+
+**Run the following variables to assign the variables from the cams data**
 ```{r other variables we can add}
 ObjectEmissivity<-  cams$Info$Emissivity              # Image Saved Emissivity - should be ~0.95 or 0.96
 dateOriginal<-cams$Dates$DateTimeOriginal             # Original date/time extracted from file
@@ -84,6 +103,7 @@ w<-           cams$Info$RawThermalImageWidth          # sensor width (i.e. image
 
 ```
 
+
 Converting Raw binary to thermal data
 If stored with a TIFF header, the data load in as a pre-allocated matrix of the same dimensions of the thermal image, but the values are integers values, in this case ~18000. The data are stored as in binary/raw format at 2^16 bits of resolution = 65536 possible values, starting at 0. These are not temperature values. They are, in fact, radiance values or absorbed infrared energy values in arbitrary units. That is what the calibration constants are for. The conversion to temperature is a complicated algorithm, incorporating Plank’s law and the Stephan Boltzmann relationship, as well as atmospheric absorption, camera IR absorption, emissivity and distance to namea few. Each of these raw/binary values can be converted to temperature, using the raw2temp function:
 
@@ -92,15 +112,22 @@ str(img)
 ```
 Can add many parameters in Raw2Temp, need to look into that. Looks like with sample data, just the plain Raw2Temp command brings up correct values to within 0.1 degress. 
 ```{r convert to temperature data}
-temperature<-raw2temp(img)
-str(temperature)       
+temperature<-raw2temp(img, E=cams$Info$Emissivity, OD = cams$Info$ObjectDistance, RTemp=cams$Info$ReflectedApparentTemperature, ATemp = cams$Info$AtmosphericTemperature, IRWTemp = cams$Info$IRWindowTemperature, IRT = cams$Info$IRWindowTransmission, RH= cams$Info$RelativeHumidity     )
+str(temperature) 
+temperature <-raw2temp(img)
+
+temperature<-raw2temp(img, ObjectEmissivity, OD, ReflT, AtmosT, IRWinT, IRWinTran, RH,
+                      PlanckR1, PlanckB, PlanckF, PlanckO, PlanckR2, 
+                      ATA1, ATA2, ATB1, ATB2, ATX)
+str(temperature)      
 ```
 Will need to change height and width of following code for image. Get from flirsettings command (xresolution, yresolution)
 ```{r plot the temperature data}
 library(fields) 
-plotTherm(temperature, h=72, w=72, minrangeset=21, maxrangeset=32)
+plotTherm(temperature, h=h, w=w, minrangeset=21, maxrangeset=32)
+
 #if rotated, can manipulate with the trans= argument in plotTherm
-plotTherm(temperature, w=72, h=72, minrangeset = 21, maxrangeset = 32, trans="rotate270.matrix")
+#plotTherm(temperature, w=72, h=72, minrangeset = 21, maxrangeset = 32, trans="rotate270.matrix")
 
 ```
 Other palette options
@@ -125,17 +152,26 @@ With thermal imaging analysis, there are at least 7 environmental parameters tha
 #For example, convert a temperature estimated at 23 degrees C, under the default blackbody conditions:
 temp2raw(23, E=1, OD=0, RTemp=20, ATemp=20, IRWTemp=20, IRT=1, RH=50, PR1=21106.77, PB=1501, PF=1, PO=-7340, PR2=0.012545258)
 ```
+
 Which yields a raw value of 17994.06 (using the calibration constants above). Now you can use raw2temp to calculate a better estimate of an object that has emissivity=0.95, distance=1m, window transmission=0.96, all temperatures=20C, 50 RH
 Note: the default calibration constants for my FLIR camera will be used if you leave out the calibration data during this two step process, but it is more appropriate to look up your camera’s calibrations constants using the flirsettings() function.
+
 ```{r}
 raw2temp(17994.06, E=0.95, OD=1, RTemp=20, ATemp=20, IRWTemp=20, IRT=0.96, RH=50, PR1=21106.77, PB=1501, PF=1, PO=-7340, PR2=0.012545258)
 ```
 Finding a way to quantitatively analyse thermal images in R is a challenge due to limited interactions with the graphics environment. Thermimage has a function that allows you to write the image data to a file format that can be easily imported into ImageJ.
 
-First, the image matrix needs to be transposed (t) to swap the row vs. column order in which the data are stored, then the temperatures need to be transformed to a vector, a requirement of the writeBin function. The function writeFlirBin is a wrapper for writeBin, and uses information on image width, height, frame number and image interval (the latter two are included for thermal video saves) but are kept for simplicity to contruct a filename that incorporates image information required when importing to ImageJ:
+First, the image matrix needs to be transposed (t) to swap the row vs. column order in which the data are stored, then the temperatures need to be transformed to a vector, a requirement of the writeBin function. The function writeFlirBin is a wrapper for writeBin, and uses information on image width, height, frame number and image interval (the latter two are included for thermal video saves) **but are kept for simplicity to contruct a filename that incorporates image information required when importing to ImageJ:**
+
 ```{r}
-#writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname="Uploads/FLIRjpg")
+knitr::opts_knit$set(root.dir = '/output')
 ```
+
+```{r}
+setwd("C:/Users/Mellisuga/Documents/R/bill_thermal/output")
+writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname=cams$Info$FileName)
+```
+
 
 
 See this link: https://github.com/gtatters/Thermimage#import-raw-file-into-imagej
