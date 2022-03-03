@@ -40,10 +40,11 @@ for (j in 1:length(files)){
 #creating a function called image_processing
 image_processing <- function(data=images) {
   images <- list.files(path="/Users/Mellisuga/Documents/R/bill_thermal/input", pattern= "*.jpg")
+  names <- unique(images)
   nimages <- length(images)
   for (i in 1:nimages){
   #read Flir jpg into img
-  img<-readflirJPG("images[i]", exiftoolpath="C:/")
+  img<-readflirJPG(names[i], exiftoolpath="C:/")
   #get img dimensions
   dim <- dim(img)
   #get camera settings (cams) with flir settings
