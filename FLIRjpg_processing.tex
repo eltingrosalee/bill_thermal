@@ -1,0 +1,317 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={FLIRjpg\_processing},
+  pdfauthor={Rosalee Elting},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifluatex
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\title{FLIRjpg\_processing}
+\author{Rosalee Elting}
+\date{3/4/2022}
+
+\begin{document}
+\maketitle
+
+\textbf{IMAGE PROCESSING CODE} \emph{This code is designed to allow
+users to process radiometric jpeg images produced from a FLIR camera
+into raw data where each pixel is assigned a temperature. This workflow
+was designed to then analyze these raw data files in ImageJ for
+temperature analysis. The code is run in two chunks, with details
+oulined below. ThermImage package was used for these analyses and
+adapted to a loop. This package was created by Glenn Tattersall and can
+be found \href{https://github.com/gtatters/Thermimage}{here}}
+
+\textbf{CHUNK 1} \emph{This chunk will create a function that pulls jpgs
+from an input folder and places the raw product into an output folder.
+In Chunk 2, you will adapt the directories to your loacl machine where
+you'd like these input and output folders. Before running this code you
+will need to install \href{https://exiftool.org/install.htm}{Exiftools}
+and follow the instructions below}
+
+\textbf{MAC USERS}:\emph{In chunk 1 below, change any statement that
+says ``exiftoolspath'' to read ``exiftoolpath=''installed``\emph{
+\textbf{WINDOWS USERS}:}Save the downloaded ExifTools into your machines
+C:/ folder. In chunk 1 below, change any statement that says''exiftools
+path" to read ``exiftoolspath'''C:/". If you need to save it in another
+location, that's okay, just reflect that in this directory.} \textbf{You
+can do either of the code replacements above with the Ctrl/Cmd + F
+function in R and replace with your needed path. Code will not run if R
+cannot find your local Exiftools} \emph{Things to change in this chunk:
+Exiftools location}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{image\_processing }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(input,output) \{}
+  \FunctionTok{require}\NormalTok{(Thermimage);}\FunctionTok{require}\NormalTok{(ggplot2);}\FunctionTok{require}\NormalTok{(tidyr);}\FunctionTok{require}\NormalTok{(Thermimage);}\FunctionTok{require}\NormalTok{(fields)}
+\NormalTok{  images }\OtherTok{\textless{}{-}} \FunctionTok{list.files}\NormalTok{(}\AttributeTok{path=}\NormalTok{input, }\AttributeTok{pattern=} \StringTok{"*.jpg"}\NormalTok{)}
+  \CommentTok{\#images \textless{}{-} list.files(path="/Users/kevinl.epperly/Dropbox/R\_scripts/bill\_thermal{-}main/input", pattern= "*.jpg")}
+\NormalTok{  names }\OtherTok{\textless{}{-}} \FunctionTok{unique}\NormalTok{(images)}
+\NormalTok{  nimages }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(images)}
+  \ControlFlowTok{for}\NormalTok{ (i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{nimages)\{}
+    \CommentTok{\#set working directory to makes sure the code below is using the images in the input folder}
+    \FunctionTok{setwd}\NormalTok{(input)}
+    \CommentTok{\#read Flir jpg into img}
+\NormalTok{    img}\OtherTok{\textless{}{-}}\FunctionTok{readflirJPG}\NormalTok{(names[i], }\AttributeTok{exiftoolpath=}\StringTok{"C:/"}\NormalTok{)}
+    \CommentTok{\#get img dimensions}
+\NormalTok{    dim }\OtherTok{\textless{}{-}} \FunctionTok{dim}\NormalTok{(img)}
+    \CommentTok{\#get camera settings (cams) with flir settings}
+\NormalTok{    cams }\OtherTok{\textless{}{-}}\FunctionTok{flirsettings}\NormalTok{(names[i], }\AttributeTok{exiftoolpath=}\StringTok{"C:/"}\NormalTok{, }\AttributeTok{camvals=}\StringTok{""}\NormalTok{)}
+    \CommentTok{\#save heading of camsinfo}
+\NormalTok{    head }\OtherTok{\textless{}{-}} \FunctionTok{head}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(cams}\SpecialCharTok{$}\NormalTok{Info), }\DecValTok{20}\NormalTok{)}
+    \CommentTok{\#save plancks from settings }
+\NormalTok{    plancks}\OtherTok{\textless{}{-}}\FunctionTok{flirsettings}\NormalTok{(names[i], }\AttributeTok{exiftoolpath=}\StringTok{"C:/"}\NormalTok{, }\AttributeTok{camvals=}\StringTok{"{-}*Planck*"}\NormalTok{)}
+    \FunctionTok{unlist}\NormalTok{(plancks}\SpecialCharTok{$}\NormalTok{Info)}
+    \FunctionTok{cbind}\NormalTok{(}\FunctionTok{unlist}\NormalTok{(cams}\SpecialCharTok{$}\NormalTok{Dates))}
+    \CommentTok{\#assign variables information in camsinfo}
+    
+\NormalTok{    ObjectEmissivity}\OtherTok{\textless{}{-}}\NormalTok{  cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{Emissivity              }\CommentTok{\# Image Saved Emissivity {-} should be \textasciitilde{}0.95 or 0.96}
+\NormalTok{    dateOriginal}\OtherTok{\textless{}{-}}\NormalTok{cams}\SpecialCharTok{$}\NormalTok{Dates}\SpecialCharTok{$}\NormalTok{DateTimeOriginal             }\CommentTok{\# Original date/time extracted from file}
+\NormalTok{    dateModif}\OtherTok{\textless{}{-}}\NormalTok{   cams}\SpecialCharTok{$}\NormalTok{Dates}\SpecialCharTok{$}\NormalTok{FileModificationDateTime     }\CommentTok{\# Modification date/time extracted from file}
+\NormalTok{    PlanckR1}\OtherTok{\textless{}{-}}\NormalTok{    cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{PlanckR1                      }\CommentTok{\# Planck R1 constant for camera  }
+\NormalTok{    PlanckB}\OtherTok{\textless{}{-}}\NormalTok{     cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{PlanckB                       }\CommentTok{\# Planck B constant for camera  }
+\NormalTok{    PlanckF}\OtherTok{\textless{}{-}}\NormalTok{     cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{PlanckF                       }\CommentTok{\# Planck F constant for camera}
+\NormalTok{    PlanckO}\OtherTok{\textless{}{-}}\NormalTok{     cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{PlanckO                       }\CommentTok{\# Planck O constant for camera}
+\NormalTok{    PlanckR2}\OtherTok{\textless{}{-}}\NormalTok{    cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{PlanckR2                      }\CommentTok{\# Planck R2 constant for camera}
+\NormalTok{    ATA1}\OtherTok{\textless{}{-}}\NormalTok{        cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{AtmosphericTransAlpha1        }\CommentTok{\# Atmospheric Transmittance Alpha 1}
+\NormalTok{    ATA2}\OtherTok{\textless{}{-}}\NormalTok{        cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{AtmosphericTransAlpha2        }\CommentTok{\# Atmospheric Transmittance Alpha 2}
+\NormalTok{    ATB1}\OtherTok{\textless{}{-}}\NormalTok{        cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{AtmosphericTransBeta1         }\CommentTok{\# Atmospheric Transmittance Beta 1}
+\NormalTok{    ATB2}\OtherTok{\textless{}{-}}\NormalTok{        cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{AtmosphericTransBeta2         }\CommentTok{\# Atmospheric Transmittance Beta 2}
+\NormalTok{    ATX}\OtherTok{\textless{}{-}}\NormalTok{         cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{AtmosphericTransX             }\CommentTok{\# Atmospheric Transmittance X}
+\NormalTok{    OD}\OtherTok{\textless{}{-}}\NormalTok{          cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{ObjectDistance                }\CommentTok{\# object distance in metres}
+\NormalTok{    FD}\OtherTok{\textless{}{-}}\NormalTok{          cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{FocusDistance                 }\CommentTok{\# focus distance in metres}
+\NormalTok{    ReflT}\OtherTok{\textless{}{-}}\NormalTok{       cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{ReflectedApparentTemperature  }\CommentTok{\# Reflected apparent temperature}
+\NormalTok{    AtmosT}\OtherTok{\textless{}{-}}\NormalTok{      cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{AtmosphericTemperature        }\CommentTok{\# Atmospheric temperature}
+\NormalTok{    IRWinT}\OtherTok{\textless{}{-}}\NormalTok{      cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{IRWindowTemperature           }\CommentTok{\# IR Window Temperature}
+\NormalTok{    IRWinTran}\OtherTok{\textless{}{-}}\NormalTok{   cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{IRWindowTransmission          }\CommentTok{\# IR Window transparency}
+\NormalTok{    RH}\OtherTok{\textless{}{-}}\NormalTok{          cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{RelativeHumidity              }\CommentTok{\# Relative Humidity}
+\NormalTok{    h}\OtherTok{\textless{}{-}}\NormalTok{           cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{RawThermalImageHeight         }\CommentTok{\# sensor height (i.e. image height)}
+\NormalTok{    w}\OtherTok{\textless{}{-}}\NormalTok{           cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{RawThermalImageWidth          }\CommentTok{\# sensor width (i.e. image width)}
+    
+    \CommentTok{\#create a sting from image }
+    \FunctionTok{str}\NormalTok{(img)}
+    \CommentTok{\#make data frame of temperature from raw data and show resulting string}
+\NormalTok{    temperature}\OtherTok{\textless{}{-}}\FunctionTok{raw2temp}\NormalTok{(img, ObjectEmissivity, OD, ReflT, AtmosT, IRWinT, IRWinTran, RH,}
+\NormalTok{                          PlanckR1, PlanckB, PlanckF, PlanckO, PlanckR2, }
+\NormalTok{                          ATA1, ATA2, ATB1, ATB2, ATX)}
+    \FunctionTok{str}\NormalTok{(temperature)}
+    \CommentTok{\#plot temperature data, can add rotation note here (ie. trans="rotate270.matrix") or the color palette (ie.thermal.palette=rainbowpal)}
+    
+    \FunctionTok{plotTherm}\NormalTok{(temperature, }\AttributeTok{h=}\NormalTok{h, }\AttributeTok{w=}\NormalTok{w, }\AttributeTok{minrangeset=}\DecValTok{21}\NormalTok{, }\AttributeTok{maxrangeset=}\DecValTok{32}\NormalTok{)}
+    \CommentTok{\#set new WD for the file, since I\textquotesingle{}d like it save in outputs}
+    \FunctionTok{setwd}\NormalTok{(output)}
+    \CommentTok{\#setwd("/Users/kevinl.epperly/Dropbox/R\_scripts/bill\_thermal{-}main/output")}
+    \CommentTok{\#Write the raw folder into the outpur folder.}
+    \FunctionTok{writeFlirBin}\NormalTok{(}\FunctionTok{as.vector}\NormalTok{(}\FunctionTok{t}\NormalTok{(temperature)), }\AttributeTok{templookup=}\ConstantTok{NULL}\NormalTok{, }\AttributeTok{w=}\NormalTok{w, }\AttributeTok{h=}\NormalTok{h, }\AttributeTok{I=}\StringTok{""}\NormalTok{, }\AttributeTok{rootname=}\NormalTok{cams}\SpecialCharTok{$}\NormalTok{Info}\SpecialCharTok{$}\NormalTok{FileName)}
+\NormalTok{  \} }
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{CHUNK 2} \emph{This Chunk will run the function we made in chunk
+1 called} \textbf{Image processing} \emph{This will pull the input from
+images that you have saved and place them in an output folder. Therfore
+for this chunk you will need to put your machine's directory into the
+argument below. They can be identical, however i recommend making
+subfolers within your project titled ``input'' and ``output''. You will
+use their location in the path below for your machine.} \emph{Thinks to
+change in this chunk: the paths of your input and output on your local
+machine}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#The format for this code is image\_processing("input location", "output location")}
+\CommentTok{\#Sample: image\_processing("C:/Users/Mellisuga/Documents/R/bill\_thermal/input","C:/Users/Mellisuga/Documents/R/bill\_thermal/output")}
+\FunctionTok{image\_processing}\NormalTok{(}\StringTok{"C:/Users/Mellisuga/Documents/R/bill\_thermal/input"}\NormalTok{,}\StringTok{"C:/Users/Mellisuga/Documents/R/bill\_thermal/output"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Loading required package: Thermimage
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'Thermimage' was built under R version 4.1.2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: ggplot2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: tidyr
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: fields
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'fields' was built under R version 4.1.2
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: spam
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: package 'spam' was built under R version 4.1.2
+\end{verbatim}
+
+\begin{verbatim}
+## Spam version 2.8-0 (2022-01-05) is loaded.
+## Type 'help( Spam)' or 'demo( spam)' for a short introduction 
+## and overview of this package.
+## Help for individual functions is also obtained by adding the
+## suffix '.spam' to the function name, e.g. 'help( chol.spam)'.
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'spam'
+\end{verbatim}
+
+\begin{verbatim}
+## The following objects are masked from 'package:base':
+## 
+##     backsolve, forwardsolve
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: viridis
+\end{verbatim}
+
+\begin{verbatim}
+## Loading required package: viridisLite
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Try help(fields) to get started.
+\end{verbatim}
+
+\begin{verbatim}
+##  int [1:480, 1:640] 11703 11701 11717 11702 11709 11713 11722 11723 11730 11734 ...
+##  num [1:480, 1:640] 9.01 8.99 9.12 9 9.05 ...
+\end{verbatim}
+
+\includegraphics{FLIRjpg_processing_files/figure-latex/unnamed-chunk-2-1.pdf}
+
+\begin{verbatim}
+##  int [1:480, 1:640] 13632 13672 13746 13837 13931 13982 14093 14157 14165 14259 ...
+##  num [1:480, 1:640] 23.4 23.7 24.2 24.8 25.5 ...
+\end{verbatim}
+
+\includegraphics{FLIRjpg_processing_files/figure-latex/unnamed-chunk-2-2.pdf}
+
+\begin{verbatim}
+##  int [1:480, 1:640] 13716 13700 13701 13694 13695 13696 13690 13713 13693 13692 ...
+##  num [1:480, 1:640] 24 23.9 23.9 23.8 23.8 ...
+\end{verbatim}
+
+\includegraphics{FLIRjpg_processing_files/figure-latex/unnamed-chunk-2-3.pdf}
+
+\textbf{Your raw files should now be available to view in your output
+folder!}
+
+\emph{This Rmd Can be knit into a HTML or PDF and will create a report
+on your photos for future reference, should you choose}
+
+\end{document}
