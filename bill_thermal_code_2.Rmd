@@ -1,0 +1,211 @@
+---
+title: "bill_thermal_code_1"
+author: "Rosalee Elting"
+date: "2/23/2022"
+output:
+  word_document: default
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+**Document Working directory for your computer and produce session info into About. **
+*Both can now be found in my environment for future reference*
+```{r}
+About<- sessionInfo()
+WD <- getwd()
+```
+
+**LOAD LIBRARIES** 
+```{r load libraries}
+library(Thermimage)
+library(ggplot2)
+library(tidyr)
+library(Thermimage)
+library(fields)
+```
+
+**EXIFTOOLS NOTE**
+*To use this Thermal Package, you will also have to download ExifTools here: https://exiftool.org/install.htm. Also you need to know where it is. The code is written that it is titled "exiftools" with NO extension (such as .exe) and located in the Windows folder (C:/)*
+
+BEGINNING OF CODE, NEED TO MAKE INTO A LOOP EVENTUALLY 
+for (j in 1:length(files)){
+  i <- read.table(files[j])
+
+```{r}
+#getting all files into a list called images 
+
+#creating a function called image_processing
+image_processing <- function(input,output) {
+  require(Thermimage);require(ggplot2);require(tidyr);require(Thermimage);require(fields)
+  images <- list.files(path=input, pattern= "*.jpg")
+  #images <- list.files(path="/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/input", pattern= "*.jpg")
+  names <- unique(images)
+  nimages <- length(images)
+  for (i in 1:nimages){
+  #set working directory to makes sure the code below is using the images in the input folder
+  setwd(input)
+  #read Flir jpg into img
+  img<-readflirJPG(names[i], exiftoolpath="installed")
+  #get img dimensions
+  dim <- dim(img)
+  #get camera settings (cams) with flir settings
+  cams <-flirsettings(names[i], exiftoolpath="installed", camvals="")
+  #save heading of camsinfo
+  head <- head(cbind(cams$Info), 20)
+  #save plancks from settings 
+  plancks<-flirsettings(names[i], exiftoolpath="installed", camvals="-*Planck*")
+  unlist(plancks$Info)
+  cbind(unlist(cams$Dates))
+  #assign variables information in camsinfo
+  
+    ObjectEmissivity<-  cams$Info$Emissivity              # Image Saved Emissivity - should be ~0.95 or 0.96
+    dateOriginal<-cams$Dates$DateTimeOriginal             # Original date/time extracted from file
+    dateModif<-   cams$Dates$FileModificationDateTime     # Modification date/time extracted from file
+    PlanckR1<-    cams$Info$PlanckR1                      # Planck R1 constant for camera  
+    PlanckB<-     cams$Info$PlanckB                       # Planck B constant for camera  
+    PlanckF<-     cams$Info$PlanckF                       # Planck F constant for camera
+    PlanckO<-     cams$Info$PlanckO                       # Planck O constant for camera
+    PlanckR2<-    cams$Info$PlanckR2                      # Planck R2 constant for camera
+    ATA1<-        cams$Info$AtmosphericTransAlpha1        # Atmospheric Transmittance Alpha 1
+    ATA2<-        cams$Info$AtmosphericTransAlpha2        # Atmospheric Transmittance Alpha 2
+    ATB1<-        cams$Info$AtmosphericTransBeta1         # Atmospheric Transmittance Beta 1
+    ATB2<-        cams$Info$AtmosphericTransBeta2         # Atmospheric Transmittance Beta 2
+    ATX<-         cams$Info$AtmosphericTransX             # Atmospheric Transmittance X
+    OD<-          cams$Info$ObjectDistance                # object distance in metres
+    FD<-          cams$Info$FocusDistance                 # focus distance in metres
+    ReflT<-       cams$Info$ReflectedApparentTemperature  # Reflected apparent temperature
+    AtmosT<-      cams$Info$AtmosphericTemperature        # Atmospheric temperature
+    IRWinT<-      cams$Info$IRWindowTemperature           # IR Window Temperature
+    IRWinTran<-   cams$Info$IRWindowTransmission          # IR Window transparency
+    RH<-          cams$Info$RelativeHumidity              # Relative Humidity
+    h<-           cams$Info$RawThermalImageHeight         # sensor height (i.e. image height)
+    w<-           cams$Info$RawThermalImageWidth          # sensor width (i.e. image width)
+
+#create a sting from image 
+str(img)
+#make data frame of temperature from raw data and show resulting string
+temperature<-raw2temp(img, ObjectEmissivity, OD, ReflT, AtmosT, IRWinT, IRWinTran, RH,
+                      PlanckR1, PlanckB, PlanckF, PlanckO, PlanckR2, 
+                      ATA1, ATA2, ATB1, ATB2, ATX)
+str(temperature)
+#plot temperature data, can add rotation note here (ie. trans="rotate270.matrix") or the color palette (ie.thermal.palette=rainbowpal)
+
+plotTherm(temperature, h=h, w=w, minrangeset=21, maxrangeset=32)
+#set new WD for the file, since I'd like it save in outputs
+setwd(output)
+#setwd("/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/output")
+#Write the raw folder into the outpur folder.
+writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname=cams$Info$FileName)
+  } 
+}
+
+image_processing("/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/input","/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/output")
+```
+
+```{r run loop}
+
+```
+
+**THIS IS MY CODE, WHICH IS WORKING**
+*the loop is likley not working because of how it's calling the files and the Flir read Jpg. Not sure yet how to resolve* 
+
+
+**IMPORTING AND PROCESSING PHOTOS**
+
+
+```{r load my image}
+f <-"IR_1913.jpg"
+img<-readflirJPG(f, exiftoolpath="installed")
+dim(img)
+```
+
+```{r extract metatags from thermal image file}
+cams<-flirsettings(f, exiftoolpath="installed", camvals="")
+head(cbind(cams$Info), 20)
+```
+
+```{r to see camera calibration constants}
+plancks<-flirsettings(f, exiftoolpath="installed", camvals="-*Planck*")
+unlist(plancks$Info)
+```
+
+```{r to see file data information}
+cbind(unlist(cams$Dates))
+```
+
+**Run the following variables to assign the variables from the cams data**
+```{r other variables we will assign}
+ObjectEmissivity<-  cams$Info$Emissivity              # Image Saved Emissivity - should be ~0.95 or 0.96
+dateOriginal<-cams$Dates$DateTimeOriginal             # Original date/time extracted from file
+dateModif<-   cams$Dates$FileModificationDateTime     # Modification date/time extracted from file
+PlanckR1<-    cams$Info$PlanckR1                      # Planck R1 constant for camera  
+PlanckB<-     cams$Info$PlanckB                       # Planck B constant for camera  
+PlanckF<-     cams$Info$PlanckF                       # Planck F constant for camera
+PlanckO<-     cams$Info$PlanckO                       # Planck O constant for camera
+PlanckR2<-    cams$Info$PlanckR2                      # Planck R2 constant for camera
+ATA1<-        cams$Info$AtmosphericTransAlpha1        # Atmospheric Transmittance Alpha 1
+ATA2<-        cams$Info$AtmosphericTransAlpha2        # Atmospheric Transmittance Alpha 2
+ATB1<-        cams$Info$AtmosphericTransBeta1         # Atmospheric Transmittance Beta 1
+ATB2<-        cams$Info$AtmosphericTransBeta2         # Atmospheric Transmittance Beta 2
+ATX<-         cams$Info$AtmosphericTransX             # Atmospheric Transmittance X
+OD<-          cams$Info$ObjectDistance                # object distance in metres
+FD<-          cams$Info$FocusDistance                 # focus distance in metres
+ReflT<-       cams$Info$ReflectedApparentTemperature  # Reflected apparent temperature
+AtmosT<-      cams$Info$AtmosphericTemperature        # Atmospheric temperature
+IRWinT<-      cams$Info$IRWindowTemperature           # IR Window Temperature
+IRWinTran<-   cams$Info$IRWindowTransmission          # IR Window transparency
+RH<-          cams$Info$RelativeHumidity              # Relative Humidity
+h<-           cams$Info$RawThermalImageHeight         # sensor height (i.e. image height)
+w<-           cams$Info$RawThermalImageWidth          # sensor width (i.e. image width)
+
+```
+
+
+*Converting Raw binary to thermal data*
+
+```{r look at raw values of data}
+str(img)
+```
+If stored with a TIFF header, the data load in as a pre-allocated matrix of the same dimensions of the thermal image, but the values are integers values, in this case ~18000. The data are stored as in binary/raw format at 2^16 bits of resolution = 65536 possible values, starting at 0. These are not temperature values. They are, in fact, radiance values or absorbed infrared energy values in arbitrary units. That is what the calibration constants are for. The conversion to temperature is a complicated algorithm, incorporating Plank’s law and the Stephan Boltzmann relationship, as well as atmospheric absorption, camera IR absorption, emissivity and distance to namea few. Each of these raw/binary values can be converted to temperature, using the raw2temp function:
+```{r convert raw to temperature data}
+temperature<-raw2temp(img, ObjectEmissivity, OD, ReflT, AtmosT, IRWinT, IRWinTran, RH,
+                      PlanckR1, PlanckB, PlanckF, PlanckO, PlanckR2, 
+                      ATA1, ATA2, ATB1, ATB2, ATX)
+str(temperature)      
+```
+*Plotting thermal data (recently assigned temp values)*
+Alternative rotations see trans= (ie. ,trans="rotate270.matrix")
+Alternative color palettes see thermal.palette= (ie. ,thermal.palette=rainbow1234pal)
+```{r plot the temperature data}
+plotTherm(temperature, h=h, w=w, minrangeset=21, maxrangeset=32)
+
+```
+**Deconvolute temperature to raw and back to temperature:**
+*Only use this hashed out code if you need to do the following*
+With thermal imaging analysis, there are at least 7 environmental parameters that must be known to convert raw to temperature. Sometimes, the parameters might have been incorrectly input by the user or changing the parameters is too cumbersome in the commercial software. temp2raw() is the inverse of raw2temp(), which allows you to convert an estimated temperature back to the raw values (i.e. deconvolute), using the initial object parameters used.
+```{r}
+#For example, convert a temperature estimated at 23 degrees C, under the default blackbody conditions:
+#temp2raw(23, E=1, OD=0, RTemp=20, ATemp=20, IRWTemp=20, IRT=1, RH=50, PR1=21106.77, PB=1501, PF=1, PO=-7340, PR2=0.012545258)
+```
+Which yields a raw value of 17994.06 (using the calibration constants above). Now you can use raw2temp to calculate a better estimate of an object that has emissivity=0.95, distance=1m, window transmission=0.96, all temperatures=20C, 50 RH
+Note: the default calibration constants for my FLIR camera will be used if you leave out the calibration data during this two step process, but it is more appropriate to look up your camera’s calibrations constants using the flirsettings() function.
+
+```{r}
+#raw2temp(17994.06, E=0.95, OD=1, RTemp=20, ATemp=20, IRWTemp=20, IRT=0.96, RH=50, PR1=21106.77, PB=1501, PF=1, PO=-7340, PR2=0.012545258)
+```
+**Preparing for Analysis**
+Finding a way to quantitatively analyse thermal images in R is a challenge due to limited interactions with the graphics environment. Thermimage has a function that allows you to write the image data to a file format that can be easily imported into ImageJ.
+
+First, the image matrix needs to be transposed (t) to swap the row vs. column order in which the data are stored, then the temperatures need to be transformed to a vector, a requirement of the writeBin function. The function writeFlirBin is a wrapper for writeBin, and uses information on image width, height, frame number and image interval (the latter two are included for thermal video saves) **but are kept for simplicity to contruct a filename that incorporates image information required when importing to ImageJ:**
+
+```{r exporting raw data for loading into imageJ}
+#setting new WD so that it will save files to the output folder
+setwd("C:/Users/Mellisuga/Documents/R/bill_thermal/output")
+#writing raw data for the given folder
+writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname=cams$Info$FileName)
+```
+
+
