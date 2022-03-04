@@ -23,7 +23,6 @@ WD <- getwd()
 library(Thermimage)
 library(ggplot2)
 library(tidyr)
-library(Thermimage)
 library(fields)
 ```
 
@@ -31,20 +30,20 @@ library(fields)
 *To use this Thermal Package, you will also have to download ExifTools here: https://exiftool.org/install.htm. Also you need to know where it is. The code is written that it is titled "exiftools" with NO extension (such as .exe) and located in the Windows folder (C:/)*
 
 BEGINNING OF CODE, NEED TO MAKE INTO A LOOP EVENTUALLY 
-for (j in 1:length(files)){
-  i <- read.table(files[j])
+
 
 ```{r}
 #getting all files into a list called images 
 
 #creating a function called image_processing
 image_processing <- function(data=images) {
-  images <- list.files(path="/Users/Mellisuga/Documents/R/bill_thermal/input", pattern= "*.jpg")
-  names <- unique(images)
-  nimages <- length(images)
-  for (i in 1:nimages){
+  for (i in 1:(nimages)){
+      images <- list.files(path="/Users/Mellisuga/Documents/R/bill_thermal/input", pattern= "*.jpg")
+      names <- unique(images)
+      nimages <- length(images)
+   
   #read Flir jpg into img
-  img<-readflirJPG(names[i], exiftoolpath="C:/")
+  img<-readflirJPG(i, exiftoolpath="C:/")
   #get img dimensions
   dim <- dim(img)
   #get camera settings (cams) with flir settings

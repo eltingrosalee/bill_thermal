@@ -30,9 +30,7 @@ library(fields)
 **EXIFTOOLS NOTE**
 *To use this Thermal Package, you will also have to download ExifTools here: https://exiftool.org/install.htm. Also you need to know where it is. The code is written that it is titled "exiftools" with NO extension (such as .exe) and located in the Windows folder (C:/)*
 
-BEGINNING OF CODE, NEED TO MAKE INTO A LOOP EVENTUALLY 
-for (j in 1:length(files)){
-  i <- read.table(files[j])
+BEGINNING OF CODE, LOOP BELOW IS WORKING, NEED TO CHANGE YOUR DIRECTORY AT FUNCTION (BOTTOM). PLEASE SEE FLIRjpg_processing RMD FOR DETAILED DESCRIPTIONS OF PROCESS AND FOR SIMPLIFIED CODE. 
 
 ```{r}
 #getting all files into a list called images 
@@ -102,15 +100,11 @@ writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootnam
   } 
 }
 
-image_processing("/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/input","/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/output")
-```
-
-```{r run loop}
-
+image_processing("C:/User/Mellisuga/Documents/R/bill_thermal/input","C:/User/Mellisuga/Documents/R/bill_thermal/output")
 ```
 
 **THIS IS MY CODE, WHICH IS WORKING**
-*the loop is likley not working because of how it's calling the files and the Flir read Jpg. Not sure yet how to resolve* 
+*the loop is now working as well and can be run as one function, chunks are helpful for learning steps of code*
 
 
 **IMPORTING AND PROCESSING PHOTOS**
