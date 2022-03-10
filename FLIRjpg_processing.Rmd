@@ -26,7 +26,6 @@ knitr::opts_chunk$set(echo = TRUE)
 image_processing <- function(input,output) {
   require(Thermimage);require(ggplot2);require(tidyr);require(Thermimage);require(fields)
   images <- list.files(path=input, pattern= "*.jpg")
-  #images <- list.files(path="/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/input", pattern= "*.jpg")
   names <- unique(images)
   nimages <- length(images)
   for (i in 1:nimages){
@@ -81,7 +80,6 @@ image_processing <- function(input,output) {
     plotTherm(temperature, h=h, w=w, minrangeset=21, maxrangeset=32)
     #set new WD for the file, since I'd like it save in outputs
     setwd(output)
-    #setwd("/Users/kevinl.epperly/Dropbox/R_scripts/bill_thermal-main/output")
     #Write the raw folder into the outpur folder.
     writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname=cams$Info$FileName)
   } 

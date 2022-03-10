@@ -202,4 +202,6 @@ setwd("C:/Users/Mellisuga/Documents/R/bill_thermal/output")
 writeFlirBin(as.vector(t(temperature)), templookup=NULL, w=w, h=h, I="", rootname=cams$Info$FileName)
 ```
 
+```{r
+```
 
