@@ -10,7 +10,6 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 **IMAGE PROCESSING CODE**
 *This code is designed to allow users to process radiometric jpeg images produced from a FLIR camera into raw data where each pixel is assigned a temperature. This workflow was designed to then analyze these raw data files in ImageJ for temperature analysis. The code is run in two chunks, with details oulined below. ThermImage package was used for these analyses and adapted to a loop. This package was created by Glenn Tattersall and can be found [here](https://github.com/gtatters/Thermimage)* 
 
@@ -18,8 +17,10 @@ knitr::opts_chunk$set(echo = TRUE)
 *This chunk will create a function that pulls jpgs from an input folder and places the raw product into an output folder. In Chunk 2, you will adapt the directories to your loacl machine where you'd like these input and output folders. Before running this code you will need to install [Exiftools](https://exiftool.org/install.htm) and follow the instructions below*
 
 **MAC USERS**:*In chunk 1 below, change any statement that says "exiftoolspath" to read "exiftoolpath= "installed"*
-**WINDOWS USERS**:*Save the downloaded ExifTools into your machines C:/ folder. In chunk 1 below, change any statement that says "exiftools path" to read "exiftoolspath' "C:/". If you need to save it in another location, that's okay, just reflect that in this directory.*
+**WINDOWS USERS**:*Save the downloaded ExifTools into your machines C:/ folder. It will be an .exe application file. In chunk 1 below, change any statement that says "exiftools path" to read "exiftoolspath= "C:/". If you need to save it in another location, that's okay, just reflect that in this directory.*
 **You can do either of the code replacements above with the Ctrl/Cmd + F function in R and replace with your needed path. Code will not run if R cannot find your local Exiftools**
+
+
 *Things to change in this chunk: Exiftools location*
 
 ```{r Chunk 1}
